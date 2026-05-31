@@ -619,20 +619,18 @@
     abandoned: { label: "Abandonado", icon: "◌" },
   };
 
-  /* ── STORAGE ── */
-  async function load() {
-    try {
-      const r = await window.storage.get(STORAGE_KEY);
-      if (r?.value) books = JSON.parse(r.value);
-    } catch { books = []; }
-    renderGrid();
-    updateStats();
-  }
+/* ── STORAGE ── */
+function load() {
+  const data = localStorage.getItem(STORAGE_KEY);
+  if (data) books = JSON.parse(data);
 
-  async function persist() {
-    try { await window.storage.set(STORAGE_KEY, JSON.stringify(books)); } catch {}
-  }
+  renderGrid();
+  updateStats();
+}
 
+function persist() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
+}
   /* ── VIEWS ── */
   function showView(name) {
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
